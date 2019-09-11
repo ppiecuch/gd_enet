@@ -277,7 +277,7 @@ void GDNetHost::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_max_bandwidth_in"),&GDNetHost::set_max_bandwidth_in);
 	ClassDB::bind_method(D_METHOD("set_max_bandwidth_out"),&GDNetHost::set_max_bandwidth_out);
 
-	ClassDB::bind_method(D_METHOD("bind"),&GDNetHost::bind,DEFVAL(NULL));
+	ClassDB::bind_method(D_METHOD("bind"),&GDNetHost::bind,DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("unbind"),&GDNetHost::unbind);
 	ClassDB::bind_method(D_METHOD("host_connect"),&GDNetHost::host_connect,DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("broadcast_packet"),&GDNetHost::broadcast_packet,DEFVAL(0),DEFVAL(GDNetMessage::UNSEQUENCED));
