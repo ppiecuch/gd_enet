@@ -179,10 +179,7 @@ Error GDNetHost::bind(Ref<GDNetAddress> addr) {
 		if (host_addr.length() == 0) {
 			penet_addr.host = PENET_HOST_ANY;
 		} else {
-			if (penet_address_set_host(&penet_addr, host_addr.get_data()) != 0) {
-				ERR_EXPLAIN("Unable to resolve host");
-				return FAILED;
-			}
+            ERR_FAIL_COND_V_MSG(penet_address_set_host(&penet_addr, host_addr.get_data()) != 0, FAILED, "Unable to resolve host");
 		}
 
 		_host = penet_host_create(&penet_addr, _max_peers, _max_channels, _max_bandwidth_in, _max_bandwidth_out);
@@ -214,10 +211,7 @@ Ref<GDNetPeer> GDNetHost::host_connect(Ref<GDNetAddress> addr, int data) {
 
 	CharString host_addr = addr->get_host().ascii();
 
-	if (penet_address_set_host(&penet_addr, host_addr.get_data()) != 0) {
-		ERR_EXPLAIN("Unable to resolve host");
-		return NULL;
-	}
+    ERR_FAIL_COND_V_MSG(penet_address_set_host(&penet_addr, host_addr.get_data()) != 0, NULL, "Unable to resolve host");
 
 	PENetPeer* peer = penet_host_connect(_host, &penet_addr, _max_channels, data);
 

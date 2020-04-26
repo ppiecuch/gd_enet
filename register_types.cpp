@@ -18,8 +18,7 @@ void register_gd_enet_types() {
 	ClassDB::register_class<GDNetHost>();
 	ClassDB::register_class<GDNetAddress>();
 
-	if (penet_initialize() != 0)
-		ERR_EXPLAIN("Unable to initialize PENet");
+    ERR_FAIL_COND_MSG(penet_initialize() != 0, "Unable to initialize PENet");
 }
 
 void unregister_gd_enet_types() {
