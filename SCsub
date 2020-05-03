@@ -3,7 +3,6 @@ Import('env')
 
 SConscript("penet/SCsub")
 
-local_env = env.Clone()
-local_env.Append(CPPPATH=['penet/include'])
-local_env.add_source_files(env.modules_sources,"*.cpp")
-
+env_module = env.Clone()
+env_module.Append(CPPPATH=['penet/include'])
+env_module.add_source_files(env.modules_sources,"*.cpp")
