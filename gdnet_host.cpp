@@ -3,9 +3,6 @@
 GDNetHost::GDNetHost() :
 	_host(NULL),
 	_running(false),
-	_thread(NULL),
-	_accessMutex(NULL),
-	_hostMutex(NULL),
 	_event_wait(DEFAULT_EVENT_WAIT),
 	_max_peers(DEFAULT_MAX_PEERS),
 	_max_channels(DEFAULT_MAX_CHANNELS),
@@ -15,24 +12,13 @@ GDNetHost::GDNetHost() :
 
 void GDNetHost::thread_start() {
 	_running = true;
-	_accessMutex = Mutex::create();
-	_hostMutex = Mutex::create();
-	_thread = Thread::create(thread_callback, this);
+	_thread.start(thread_callback, this);
 }
 
 void GDNetHost::thread_stop() {
 	_running = false;
 
-	Thread::wait_to_finish(_thread);
-
-	memdelete(_thread);
-	_thread = NULL;
-
-	memdelete(_accessMutex);
-	_accessMutex = NULL;
-
-	memdelete(_hostMutex);
-	_hostMutex = NULL;
+	_thread.wait_to_finish();
 }
 
 void GDNetHost::thread_callback(void *instance) {
@@ -40,13 +26,13 @@ void GDNetHost::thread_callback(void *instance) {
 }
 
 void GDNetHost::acquireMutex() {
-	_accessMutex->lock();
-	_hostMutex->lock();
-	_accessMutex->unlock();
+	_accessMutex.lock();
+	_hostMutex.lock();
+	_accessMutex.unlock();
 }
 
 void GDNetHost::releaseMutex() {
-	_hostMutex->unlock();
+	_hostMutex.unlock();
 }
 
 int GDNetHost::get_peer_id(PENetPeer* peer) {
